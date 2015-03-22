@@ -1,0 +1,82 @@
+#include<iostream>
+#include<cstdio>
+#include<map>
+#include<vector>
+#include<algorithm>
+#include<cstdlib>
+#include<queue>
+#include<cstring>
+#include<cstdlib>
+
+using namespace std;
+
+#define max 10001
+#define pii pair<int ,int >
+#define psi pair<string ,int >
+#define INF 1000000000
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n;
+		map<string,int > M;
+		map<string ,int > :: iterator it;
+		vector<pii> graph[max];
+		scanf("%d",&n);
+		for(int i=1;i<=n;i++)
+		{
+			char str[11];
+			scanf("%s",str);
+			int m;
+			M.insert(psi(str,i));
+			scanf("%d",&m);
+			while(m--)
+			{
+				int k,l;
+				scanf("%d %d",&k,&l);
+				graph[i].push_back(pii(k,l));
+			}
+		}
+		int c;
+		scanf("%d",&c);
+		while(c--)
+		{
+			int d[max],visited[max]={0};
+			char city[11];
+			scanf("%s",city);
+			it = M.find(city);
+			int u = (*it).second;
+			scanf("%s",city);
+			it = M.find(city);
+			int v=(*it).second;
+			for(int j=1;j<=n;j++ ) d[j] = INF; 
+			priority_queue<int,vector<int>,greater<int > > Q;
+			Q.push(u);
+			d[u] = 0;
+			while(!Q.empty())
+			{
+				int f=Q.top();				
+				Q.pop();
+				if(visited[f]) continue;
+				if(f==v) break;
+				int si=graph[f].size();
+				for(int i=0;i<si;i++)
+				{
+					int vi=graph[f][i].first;
+					int w = graph[f][i].second;
+					if(!visited[vi] && d[vi]>(w+d[f]))
+					{
+						d[vi] = w + d[f];
+						Q.push(vi);
+					}
+				}
+				visited[f] = 1;
+			}
+			printf("%d\n",d[v]);
+		}
+	}
+	return 0;
+}

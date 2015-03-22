@@ -1,0 +1,58 @@
+#include <stdio.h>
+ 
+// prototype for swap
+void swap(int *a, int *b);
+ 
+// The main function that rearranges elements of given array.  It puts 
+// positive elements at even indexes (0, 2, ..) and negative numbers at 
+// odd indexes (1, 3, ..).
+void rearrange(int arr[], int n)
+{
+    // The following few lines are similar to partition process
+    // of QuickSort.  The idea is to consider 0 as pivot and
+    // divide the array around it.
+	int i=-1;
+	int j;
+	for(j=0;j<n;j++)
+	{	
+		if(arr[j]<0)
+		{
+			i++;
+			swap(&arr[i],&arr[j]);
+		}
+	}
+	int pos=i+1;
+	int neg=0;
+	while(pos<n  &&  neg<pos  &&  arr[neg]<0)
+	{
+		swap(&arr[pos],&arr[neg]);
+		pos++;
+		neg += 2;
+	}
+}
+ 
+// A utility function to swap two elements
+void swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+ 
+// A utility function to print an array
+void printArray(int arr[], int n)
+{
+     int  i;
+    for (i = 0; i < n; i++)
+        printf("%4d ", arr[i]);
+}
+ 
+// Driver program to test above functions
+int main()
+{
+    int arr[] = {-1, 2, -3, 4, 5, 6, -7, 8, 9};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    rearrange(arr, n);
+    printArray(arr, n);
+    return 0;
+}

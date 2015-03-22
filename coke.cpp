@@ -1,0 +1,25 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+
+using namespace std;
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	int c=1;
+	while( t--)
+	{
+		long long n,k,sum=0,min=-1;
+		scanf("%lld",&n);
+		for(int i=0;i<n;i++)
+		{
+			scanf("%lld",&k);
+			sum += k;	
+			min = sum-1 < min ? sum-1 : min;
+		}
+		printf("Scenario #%d: %lld\n",c++,abs(min));
+	}
+	return 0;
+}

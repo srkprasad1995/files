@@ -1,0 +1,41 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+#include<vector>
+
+using namespace std;
+
+#define pii pair<int ,int >
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n;
+		scanf("%d",&n);
+		vector<pii> a;
+		for(int i=0;i<n;i++)
+		{
+			int p,q;
+			scanf("%d %d",&p,&q);
+			a.push_back(pii(p,q));
+		}
+//		sort(a.begin(),a.end());
+		int max = 0;
+		for(int i = 0;i<n;i++)
+		{
+			int cnt= 0;
+			for(int j=0;j<n;j++)
+			{
+				if(a[i].first>=a[j].first && a[j].second>=a[i].second)
+					cnt ++ ;
+			}
+			if(cnt > max) max = cnt;
+		}
+		printf("%d\n",max);
+	}
+	return 0;
+}

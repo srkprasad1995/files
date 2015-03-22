@@ -1,0 +1,19 @@
+#include<iostream>
+#include<cstdio>
+#include<cmath>
+#include<cstdlib>
+using namespace std;
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		char str1[5000],str2[5000],str3[1003];
+		scanf("%[^+]+%[^+]+%s",str1,str2,str3);
+		printf("%s->%s->%s",str1,str2,str3);
+	}
+	return 0;
+}
+			

@@ -1,0 +1,35 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cstdlib>
+
+using namespace std;
+
+int main()
+{
+	int dp[13][99]={0};
+	for(int i=0;i<13;i++)
+		for(int j=0;j<99;j++)
+			{
+				if(i==0)
+					dp[i][j] = 0;
+				else if(j==0)
+					dp[i][j] = 1;
+				else 
+				{
+					int sum =0;
+					for(int l=0;l<i&&(j-l)>=0;l++)
+						sum+=dp[i-1][j-l];
+					dp[i][j] = sum;
+				}
+			}
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,k;
+		scanf("%d%d",&n,&k);
+		printf("%d\n",dp[n][k]);
+	}
+	return 0;
+}

@@ -1,0 +1,92 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<map>
+#include<vector>
+#include<math.h>
+#include<stdlib.h>
+#include<limits.h>
+#include<cstdio>
+
+using namespace std;
+
+int n,q;
+int *flag;
+int *st;
+
+void initialize()
+{
+	int ht = ceil(log2(n));
+	int size = (2*pow(2,ht)) + 5;
+	st = new int[size];
+	flag = new int [size];
+	for(int i=0; i <size ;i++)
+		st[i] = 0, flag[i] = 0;
+}
+
+void update( int node ,int start ,int end ,int a ,int b)
+{
+	if( flag[node] == 1)
+	{
+		st[node] = end - start +1 - st[node];
+		if(start != end)
+		{
+			flag[ (node << 1)] = 1- flag[(node << 1)];
+			flag [ (node << 1) +1] = 1-flag[(node << 1) +1];
+		}
+		flag[node]=0;
+	}
+	if(start > b || end < a)
+		return ;
+	if( start >= a && end <=b)
+	{
+		st[node] =end - start +1 - st[node];
+		if(start != end)
+		{
+			flag[ (node << 1)] = 1- flag[(node << 1)];
+			flag [ (node << 1) +1] = 1-flag[(node << 1) +1];
+		}
+		return ;
+	}
+	
+	update ( (node << 1) , start , (start+end) >> 1 , a , b);
+	update( (node << 1) +1 , ((start+end)>>1) +1 ,end , a ,b);
+	st[node] = st[node<<1] +st[(node << 1) +1];
+	return ;
+}
+
+int query(int node,int start , int end ,int a ,int b)
+{
+	if ( a>end || b < start)
+		return 0;
+	if(flag[node] == 1)
+	{
+		st[node] = end - start +1 - st[node];
+		if(start != end)
+		{
+			flag[ (node << 1)] = 1- flag[(node << 1)];
+			flag [ (node << 1) +1] = 1-flag[(node << 1) +1];
+		}
+		flag[node]=0;
+	}
+	if( start >= a && end <=b)
+		return st[node];
+	int l =query ( (node << 1) , start , ((start+end)>>1) , a , b);
+	int r = query ((node << 1) +1 , ((start+end)>>1) +1 ,end , a ,b);
+	return l+r;
+}
+
+int main()
+{
+	cin >> n >> q;
+	initialize();
+	while( q-- )
+	{
+		int op,a,b;
+		scanf("%d %d %d" ,&op , &a, &b);
+		if( op == 0)
+			update( 1 , 0 , n-1 , a , b );
+		else printf("%d", query( 1, 0 ,n-1 , a , b));
+	}
+	return 0;
+}

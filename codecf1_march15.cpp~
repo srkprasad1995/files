@@ -1,0 +1,28 @@
+#include<cstdio>
+#include<iostream>
+#include<climits>
+
+using namespace std;
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int x,y,n,k,p,c;
+		scanf("%d %d %d %d",&x,&y,&k,&n);
+		bool f=0;
+		while(n--)
+		{
+			scanf("%d %d",&p,&c);
+			if(p>=(x-y) && c<=k)
+				f=1;
+		}
+		if(f)
+			printf("LuckyChef\n");
+		else 
+			printf("UnluckyChef\n");
+	}
+	return 0;
+}

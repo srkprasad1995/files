@@ -1,0 +1,55 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+#include<cstring>
+
+using namespace std;
+
+int visited[100001];
+
+void dfs(vector<int > graph[],int i)
+{
+	if(!visited[i])
+	{
+		visited[i] = 1;
+		int sz=graph[i].size();
+		for(int j=0;j<sz;j++)
+		{
+			int temp=graph[i][j];
+			if(!visited[temp])
+				dfs(graph,temp);
+		}
+	}
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,m;
+		scanf("%d %d",&n,&m);
+		vector<int > graph[100001];
+		memset(visited,0,sizeof(visited));
+		while(m--)
+		{
+			int u,v;
+			scanf("%d %d",&u,&v);
+			graph[u].push_back(v);
+			graph[v].push_back(u);
+		}
+		int cnt = 0;
+		for(int i = 1;i<=n;i++)
+		{
+			if(!visited[i])
+			{
+				cnt++;
+				dfs(graph,i);
+			}
+		}
+		printf("%d\n",cnt-1);
+	}
+	return 0;
+}

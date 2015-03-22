@@ -1,0 +1,44 @@
+#include<cstdio>
+#include<iostream>
+#include<cstring>
+#include<cstdlib>
+
+using namespace std;
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		long long n,s;
+		int a[100002]={0};
+		scanf("%lld %lld",&n,&s);
+		for(int i=0;i<n;i++)
+			a[i] = 1;
+		s -= n;
+		while(s--)
+		{
+			for(int i=n-1;i>=0;i--)
+			{
+				if(a[i]==a[i-1] )
+				{
+					a[i]++;
+					break;
+				}
+			}
+		}
+		int i=0;int cnt =0;
+		while(i<n)
+		{
+			int j=i+1;
+			while(j<n && a[j] == a[i])
+			{
+				cnt ++ ;j++;
+			}
+			i=j;
+		}
+		printf("%d\n",cnt);
+	}
+	return 0;
+}

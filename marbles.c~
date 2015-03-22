@@ -1,0 +1,20 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		long long n,k,j,res=1;
+		scanf("%lld %lld",&n,&k);
+		n=n-1;k=k-1;
+		for( j=1; j<=k;j++,n--)
+		{
+			res=(res*n)/j;
+		}
+		printf("%lld\n",res);
+	}
+	return 0;
+}

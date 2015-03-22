@@ -1,0 +1,20 @@
+#include<iostream>
+#include<cstdio>
+using namespace std;
+
+int main()
+{
+	int n;
+	scanf("%d",&n);
+	if(n==0) return 0;
+	int temp;
+	int k;
+	scanf("%d",&k);
+	temp=k;
+	n--;
+	while(n--){
+		scanf("%d",&k);
+		temp ^= k;}
+	printf("%d\n",temp);
+	return 0;
+}

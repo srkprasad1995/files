@@ -1,0 +1,291 @@
+#include<cstdio>
+#include<iostream>
+#include <fstream>
+#include<cstring>
+#include<queue>
+#include<string>
+#include<cstdlib>
+
+using namespace std;
+
+#define pii pair<int ,int> 
+
+void straight()
+{
+	while(true)
+		{
+			if(centre_black_line>0x0A && left_black_line < 0x0A && right_black_line<0x0A) 
+			{
+				forward();
+				velocity(200,200);
+			}
+		}
+}
+
+void fun(int p,int q,int x,int y,pii prev[10][10])
+{
+	if(p==x && q==y) return;
+	int e,f;
+	e=prev[p][q].first;
+	f= prev[p][q].second;
+	fun(e,f,x,y,prev);
+	if(p<e)
+	{
+		//printf("B",p,q);
+		straight();
+	}
+	else if(p>e)
+	{
+		//printf("U",p,q);
+		straight();
+	}
+	else if(q>f)
+	{
+		//printf("R",p,q);
+		right();
+		straight();
+	}
+	else
+	{
+		//printf("L",p,q);
+		left();
+		straight();
+	}
+	return ;
+}
+
+int main()
+{
+	while(true)
+	{
+		if(centre_black_line>0x0A && left_black_line < 0x0A && right_black_line<0x0A) 
+		{
+			forward();
+			velocity(200,200);
+		}
+	}
+	int count =0;
+	int ad[10][10][10][10] = {{{{0}}}};
+	int i,j;
+	int a,b,c;
+/*	for(i = 0;i< 10;i++)
+		for(j=0;j<10;j++)
+		{
+			printf("enter the adjacent nodes of %d,%d",i,j);
+			while(1)
+			{
+				scanf("%d %d",&a,&b);
+				if(a==-1 && b==-1) break;
+				ad[i][j][a][b] = 1;
+			}
+		}*/
+string line;
+  ifstream myfile ("adjacency_list.txt");
+  if (myfile.is_open())
+  {
+    while ( getline(myfile,line) )
+    {
+      int l=line.size();
+	int a = line[0] - '0';
+	int b = line[1] -'0';
+	int i = 2;
+	while(i<l)
+	{
+		int c = line[i]-'0';
+		int d = line[i+1]-'0';
+		ad[a][b][c][d] = 1;
+		i += 2;
+	}
+     }
+    }
+    myfile.close();
+	int init[10][10]  = {{0}};
+	int f[10][10] = {{0}};
+//	printf("enter the final coordinates and colors 1:red 2:blue 3:black\n");
+	/*while(1)
+	{
+		scanf("%d %d %d",&a,&b,&c);
+		if(a == -1 && b==-1)
+			break;
+		f[a][b]  = c;
+	}*/
+	ifstream myfile1 ("deposition_list.txt");
+  if (myfile1.is_open())
+  {
+    while ( getline(myfile1,line) )
+    {
+	int a = line[0] - '0';
+	int b = line[1] -'0';
+	int c = line[2] -'0';
+	f[a][b] = c;
+     }
+    }
+    myfile1.close();
+//	printf("enter the possible input positions\n");
+	/*while(1)
+	{
+		count ++;
+		scanf("%d %d",&a,&b);
+		if(a == -1 && b==-1)
+			break;
+		init[a][b]  = 1;
+	}*/
+	ifstream myfile2 ("pickup_list.txt");
+  if (myfile2.is_open())
+  {
+    while ( getline(myfile2,line) )
+    {
+	int a = line[0] - '0';
+	int b = line[1] -'0';
+	init[a][b] = 1;
+	count ++;
+     }
+    }
+    myfile2.close();
+	int u = 0,v=4;
+	int visitedf[10][10] = {{0}};
+	bool flag = 0;
+	if((count)){
+		pii prev[10][10];
+		bool visited[10][10] = {{0}};
+		queue<pii > Q;
+		int p,q;
+		int x=u,y=v;
+		Q.push(pii(u,v));
+		while(!Q.empty())
+		{
+			p = Q.front().first;
+			q = Q.front().second;
+			Q.pop();
+			visited[p][q] = 1;
+			if(init[p][q] && !visitedf[p][q]){ 
+				u = p;v=q;
+				flag=!flag;visitedf[p][q] = 1;
+				break;} 
+			for( i =0;i<10;i++)
+				for(j=0;j<10;j++)
+				{
+					if(ad[p][q][i][j] && !visited[i][j]) 
+					{
+						Q.push(pii(i,j));
+						prev[i][j] = pii(p,q);
+					}
+				}
+		}
+		/*while( p != x || q != y)
+		{
+			printf("%d %d ->",p,q);
+			int e,f;
+			e=prev[p][q].first;
+			f= prev[p][q].second;
+			p=e;q=f;
+		}*/
+		fun(p,q,x,y,prev);
+		if(centre_black_line>0x0A && left_black_line > 0x0A && right_black_line<0x0A) 
+			left();
+		else right();
+		////// color sensing ( proximity sensor)
+		/// if valid pickup 
+		// rotate 180^..
+		count --;
+	}
+	while(1)
+	{	
+		// if initial
+		if(flag)
+		{
+		printf("enter the color at %d %d",u,v);
+		scanf("%d",&c);
+		if(c==0 || c==4)
+		{
+			flag = !flag;
+			continue;
+		}
+		int p,q;
+		bool visited[10][10] = {{0}};
+		queue<pii > Q;
+		Q.push(pii(u,v));
+		pii prev[10][10];
+			int x,y;
+			x=u;y=v;
+		while(!Q.empty())
+		{
+			p = Q.front().first;
+			q = Q.front().second;
+			Q.pop();
+			visited[p][q] = 1;
+			if(f[p][q] == c){ 
+				u = p;v=q;flag=!flag;
+				break;} 
+			for( i =0;i<10;i++)
+				for(j=0;j<10;j++)
+				{
+					if(ad[p][q][i][j] && !visited[i][j]) 
+					{
+						Q.push(pii(i,j));
+						prev[i][j] = pii(p,q);
+					}
+				}
+		}
+/*		while( p != x || q != y)
+		{
+			printf("%d %d ->",p,q);
+			int e,f;
+			e=prev[p][q].first;
+			f= prev[p][q].second;
+			p=e;q=f;
+		}*/
+		fun(p,q,x,y,prev);
+		//drop object;
+		//printf("\nplace\n");
+		}
+		else 
+		{	
+		if(!(count)) break;
+		pii prev[10][10];
+		bool visited[10][10] = {{0}};
+		queue<pii > Q;
+		int p,q;
+		int x=u,y=v;
+		Q.push(pii(u,v));
+		while(!Q.empty())
+		{
+			p = Q.front().first;
+			q = Q.front().second;
+			Q.pop();
+			visited[p][q] = 1;
+			if(init[p][q] && !visitedf[p][q]){ 
+				u = p;v=q;
+				flag=!flag;visitedf[p][q] = 1;
+				break;} 
+			for( i =0;i<10;i++)
+				for(j=0;j<10;j++)
+				{
+					if(ad[p][q][i][j] && !visited[i][j]) 
+					{
+						Q.push(pii(i,j));
+						prev[i][j] = pii(p,q);
+					}
+				}
+		}
+		/*while( p != x || q != y)
+		{
+			printf("%d %d ->",p,q);
+			int e,f;
+			e=prev[p][q].first;
+			f= prev[p][q].second;
+			p=e;q=f;
+		}*/
+		fun(p,q,x,y,prev);
+		if(centre_black_line>0x0A && left_black_line > 0x0A && right_black_line<0x0A) 
+			left();
+		else right();
+		////// color sensing ( proximity sensor)
+		/// if valid pickup
+		// rotate 180^..
+		//printf("\npick up\n");
+		count --;
+		}		
+	} 
+	return 0;
+}

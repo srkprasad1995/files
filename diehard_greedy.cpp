@@ -1,0 +1,46 @@
+#include<cstdio>
+#include<iostream>
+#include<cstring>
+#include<cstdlib>
+
+using namespace std;
+
+int dp[2000][2000][3];
+
+int solve(int h,int a,int c)
+{
+	if(h<=0 || a<=0) return 0;
+	if(dp[h][a][c] != -1) return dp[h][a][c];
+	int h1=h,a1=a,c1 = c;
+	if(c==0)
+	{
+		h += 3;a+=2;
+		dp[h1][a1][c1] = 1+max(solve(h,a,1),solve(h,a,2));
+	}
+	if(c==1)
+	{
+		h -= 5;a-= 10;
+		dp[h1][a1][c1] = 1+max(solve(h,a,0),solve(h,a,2));
+	}
+	if(c==2)
+	{
+		h -= 20;a+= 5;
+		dp[h1][a1][c1] = 1+max(solve(h,a,1),solve(h,a,0));
+	}
+	return dp[h1][a1][c1];
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	memset(dp,-1,sizeof(dp));
+	while(t--)
+	{
+		int h,a;
+		scanf("%d %d",&h,&a);
+		int m = max(solve(h,a,0),max(solve(h,a,1),solve(h,a,2)));
+		printf("%d\n",m-1);
+	}
+	return 0;
+}

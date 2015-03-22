@@ -1,0 +1,59 @@
+#include<cstdio>
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<queue>
+
+using namespace std;
+
+#define pii pair<int ,int >
+#define pp pair<int ,pii>
+#define INF 1000000000
+
+int abs(int x)
+{
+	return (x<0?-x:x);
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int x1,y1,x2,y2;
+		scanf("%d %d %d %d",&x1,&y1,&x2,&y2);
+		priority_queue<pp,vector<pp>,greater<pp> > Q;
+//		x1--;y1--;x2--;y2--;
+		int d[10][10];int visited[10][10] = {{0}};
+		for(int i=0;i<10;i++)
+			for(int j=0;j<10;j++)
+				d[i][j] = INF;
+		Q.push(pp(0,pii(x1,y1)));
+		d[x1][y1] = 0;
+		int di[] = {1,-1,2,-2};
+		int dj[] = {1,-1,2,-2};
+		while(!Q.empty())
+		{
+			int dist = Q.top().first;
+			int u=Q.top().second.first;
+			int v= Q.top().second.second;
+			Q.pop();
+			if(visited[u][v]) continue;
+			if(u==x2&&v==y2) break;
+			for(int i=0;i<4;i++)
+				for(int j=0;j<4;j++)
+				{
+					if(abs(di[i]) == abs(dj[j])) continue;
+					if(((u+di[i]) >=0) && ((u + di[i]) <10) && ((v+dj[j])>=0)&& ((v+dj[j]) <10))
+					{
+						d[u+di[i]][v+dj[j]] = d[u][v] + 1;
+						Q.push(pp(d[u+di[i]][v+dj[j]],pii(u+di[i],v+dj[j])));
+					}
+				}
+			visited[u][v] = 1;
+		}
+		printf("%d\n",3*d[x2][y2]);
+	}
+	return 0;
+}

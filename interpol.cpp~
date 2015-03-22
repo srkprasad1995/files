@@ -1,0 +1,41 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cstring>
+
+using namespace std;
+
+int a[101][101];
+int b[101];
+void build_inter( int s , int c)
+{
+	for( int i = 0 ; i < s ;i++)
+		a[0][i] = b[i];
+	for( int i = 1 ; i < s ;i++)
+		for( int j = 0 ; j < s-i ; j++)
+			a[i][j] = a[i-1][j+1] - a[i-1][j];
+	for( int i = 1 ; i < c+1 ; i++)
+		a[s-1][i] = a[s-1][0];
+	for(int i= s-2; i >=0 ; i--)
+		for( int j = s-i ; j < s-i+c ; j++)
+			a[i][j] = a[i][j-1] + a[i+1][j];
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while( t-- )
+	{
+		memset ( a , -1 , sizeof(a) );
+		int s,c;
+		scanf("%d %d", &s, &c);
+		for( int i = 0 ; i< s; i++)
+			scanf("%d", &b[i]);
+		build_inter( s , c);
+		for ( int i = s ; i < s+c ; i++)
+			printf("%d ",a[0][i]);
+		printf("\n");
+	}
+	return 0;
+}

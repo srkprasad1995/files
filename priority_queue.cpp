@@ -1,0 +1,103 @@
+#include<iostream>
+#include<cstdio>
+#include<queue>
+#include<climits>
+#include<map>
+
+using namespace std;
+
+map< string , int> dicto;
+
+typedef struct node_dist
+{
+	int node;
+	int dist;
+}node_dist;
+
+class cmp
+{
+	public :
+		bool operator()( node_dist &a , node_dist &b )
+		{
+			return a.dist > b.dist;
+		}
+};
+
+void dijikstra( int size , int start , vector<node_dist> graph[] ,char str[])
+{
+	bool *visited = new bool[size];
+	int *dist = new int[size];
+	for ( int i = 1 ; i <= size ; i++)
+	{
+		dist[i] = INT_MAX;
+		visited[i] = false;
+	}
+	dist[start] = 0;
+	priority_queue <node_dist , vector < node_dist> , cmp> pq;
+	node_dist s = {start , 0};
+	pq.push(s);
+	while(!pq.empty())
+	{
+		node_dist temp = pq.top();
+		pq.pop();
+		int nod = temp.node;
+		if ( visited[nod] )
+			continue;
+		visited[nod] = true;
+		if(nod == dicto[string(str)])
+			break;
+		int l=graph[nod].size();
+		for( int i= 0 ; i < l ; i++)
+		{
+			if( !visited[graph[nod][i].node])
+			{
+				int t = dist[nod] + graph[nod][i].dist;
+				if( t < dist[graph[nod][i].node])
+				{
+					dist[graph[nod][i].node] = t;
+					node_dist temp_node;
+					temp_node.node = graph[nod][i].node;
+					temp_node.dist = t;
+					pq.push(temp_node);
+				}
+			}
+		}
+	}
+	printf("%d ",dist[dicto[string(str)]]);
+	printf("\n");
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int size;
+		char str[11];
+		vector < node_dist > graph[10001]; 
+		scanf( "%d" , &size);
+		for( int i = 1 ; i <= size ; i++)
+		{
+			scanf("%s",str);
+			int k;
+			dicto[string(str)] = i;
+			scanf("%d",&k);
+			while(k--)
+			{
+				node_dist temp;
+				scanf("%d %d",&temp.node,&temp.dist);
+				graph[i].push_back(temp);
+			}
+		}
+		int start;
+		scanf("%d" , &start);
+		while(start--)
+		{
+			char str1[11],str2[11];
+			scanf("%s %s",str1,str2);
+			dijikstra( size , dicto[string(str1)] , graph,str2);
+		}
+	}
+	return 0;
+}

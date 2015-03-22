@@ -1,0 +1,36 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<cstring>
+#include<cstdlib>
+
+using namespace std;
+
+int main()
+{
+while(true){
+	char str[10000];
+	cin.getline(str,10000);
+	if(strcmp(str,"*")==0){
+		break;}
+	else{
+		int l=strlen(str),i,k=0;
+		while(str[k]==' '&& k<l)
+		{
+			k++;
+		}
+		char ch = tolower(str[k]);
+		bool f=0;
+		for(i=k+1;i<l-1;i++)
+		{
+			if(str[i] == ' ')
+				if(tolower(str[i+1]) != ch )
+					{f=1;break;}
+		}
+		if(f==0)
+			printf("Y\n");
+		else printf("N\n");
+	}
+}
+	return 0;
+}

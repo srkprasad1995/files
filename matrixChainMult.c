@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<limits.h>
+ 
+// Matrix Ai has dimension p[i-1] x p[i] for i = 1..n
+int MatrixChainOrder(int p[], int n)
+{
+ 
+    /* For simplicity of the program, one extra row and one extra column are
+       allocated in m[][].  0th row and 0th column of m[][] are not used */
+	int m[n][n],i,j,k;
+	for(i=1;i<n;i++)
+		m[i][i]=0;
+	int l;
+	for(l=2;l<n;l++)
+		for(i=1;i<n-l+1;i++)
+		{
+			j=i+l-1;
+			m[i][j]=INT_MAX;
+			for(k=i;k<j;k++)
+			{
+				int temp=m[i][k] + m[k+1][j] + p[i-1]*p[k]*p[j];
+				if(temp<m[i][j])
+					m[i][j]=temp;
+			}
+		}
+	return m[1][n-1];
+}
+ 
+int main()
+{
+    int arr[] = {1, 2, 3, 4};
+    int size = sizeof(arr)/sizeof(arr[0]);
+ 
+    printf("Minimum number of multiplications is %d ",
+                       MatrixChainOrder(arr, size));
+ 
+    getchar();
+    return 0;
+}
+

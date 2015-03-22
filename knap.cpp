@@ -1,0 +1,32 @@
+#include<iostream>
+#include<cstdio>
+
+using namespace std;
+int main()
+{
+	while(true)
+	{
+		int n,W,i,w;
+		scanf("%d %d",&W,&n);
+		if(W==0 && n==0)
+			break;
+		int val[101],wt[101];
+		for(i=0;i<n;i++)
+			scanf("%d %d",&wt[i],&val[i]);
+		int K[102][501];
+		for(i = 0; i <= n; i++)
+   		{
+       			for(w=0; w<=W; w++)
+       			{
+			           if (i==0 || w==0)
+               				K[i][w] = 0;
+           			   else if (wt[i-1] <= w)
+			                 K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]);
+           			    else
+                 			  K[i][w] = K[i-1][w];
+       			}
+   		}
+  		 printf("%d\n",K[n][W]);
+	}
+	return 0;
+}

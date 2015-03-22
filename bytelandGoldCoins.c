@@ -1,0 +1,34 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+long long sub(long long );
+long long a[1000005];
+
+int main()
+{
+	int n;
+	int i;
+	for(i=0;i<12;i++)
+	{
+		a[i]=i;
+	}
+	for(i=12;i<1000001;i++)
+	{
+		a[i]=a[i/2]+a[i/3]+a[i/4];
+	}
+	while((scanf("%d",&n)!=EOF))
+	{
+		long long res=sub(n);
+		printf("%lld\n",res);
+	}
+	return 0;
+}
+
+long long sub(long long n)
+{
+	if(n<1000001)
+		return a[n];
+	else 
+		return (sub(n/2)+sub(n/3)+sub(n/4));
+}
+

@@ -1,0 +1,40 @@
+#include<iostream>
+#include<cstdio>
+#include<map>
+#include<vector>
+
+using namespace std;
+
+#define pdi pair<double,int>
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int s,c,k;
+		scanf("%d %d %d",&s,&c,&k);
+		map<double,int> M;
+		map<double,int> :: iterator it;
+		long long d = 1LL<<(s-1);
+		double temp=0;
+		int inc=s;
+		while(temp <= 2)
+		{
+			inc %= (s+1);
+			if(inc == 0) inc++;
+			M.insert(pdi(temp,inc));
+			temp += 1.0/double(d);
+			inc++;
+		}
+		int count=0;
+		for(it = M.begin();it!= M.end();it++)
+		{
+			if(it ->second >=k)
+				count++;
+		}
+		printf("%d\n",count);
+	}
+	return 0;
+}

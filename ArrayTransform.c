@@ -1,0 +1,25 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	while(t--)
+	{
+		int n,k,a[11]={0},temp;
+		scanf("%d %d",&n,&k);
+		int i,f=0;
+		for(i=0;i<n;i++)
+		{
+			scanf("%d",&temp);
+			a[temp%(k+1)]++;
+			if(a[temp%(k+1)]==(n-1))
+				f=1;
+		}
+		if(f==0)
+			printf("NO\n");
+		else printf("YES\n");
+	}
+	return 0;
+}

@@ -1,0 +1,78 @@
+#include<stdio.h>
+#include<stdlib.h>
+ 
+/* A linked list node */
+typedef struct node
+{
+  int data;
+  struct node *next;
+}node;
+ 
+/*Function to swap two integers at addresses a and b */
+
+void pairWiseSwap(node *head)
+{
+	if(head || head->next)
+		return ;
+	node *ptr=head;
+	while(ptr!=NULL && ptr->next!=NULL)
+	{
+		int temp=ptr->data;
+		ptr->data=ptr->next->data;
+		ptr->next->data=temp;
+		ptr=ptr->next->next;
+	}
+}
+ 
+/* Function to add a node at the begining of Linked List */
+void push(struct node** head_ref, int new_data)
+{
+  /* allocate node */
+  struct node* new_node =
+            (struct node*) malloc(sizeof(struct node));
+ 
+  /* put in the data  */
+  new_node->data  = new_data;
+ 
+  /* link the old list off the new node */
+  new_node->next = (*head_ref);
+ 
+  /* move the head to point to the new node */
+  (*head_ref)    = new_node;
+}
+ 
+/* Function to print nodes in a given linked list */
+void printList(struct node *node)
+{
+  while (node != NULL)
+  {
+    printf("%d ", node->data);
+    node = node->next;
+  }
+}
+ 
+/* Druver program to test above function */
+int main()
+{
+  struct node *start = NULL;
+ 
+  /* The constructed linked list is:
+   1->2->3->4->5 */
+  push(&start, 5);
+  push(&start, 4);
+  push(&start, 3);
+  push(&start, 2);
+  push(&start, 1);
+ 
+  printf("\n Linked list before calling  pairWiseSwap() ");
+  printList(start);
+ 
+  pairWiseSwap(start);
+ 
+  printf("\n Linked list after calling  pairWiseSwap() ");
+  printList(start);
+ 
+  getchar();
+  return 0;
+}
+
